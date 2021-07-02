@@ -22,13 +22,16 @@ all: release
 build:
 	mkdir -p $(OBJECTS)
 
-$(OBJECTS)/main.o: $(SOURCES)/main.cpp $(OBJECTS)/store.o build
+$(OBJECTS)/main.o: $(SOURCES)/main.cpp $(OBJECTS)/store.o $(OBJECTS)/text_handlers.o build
 	$(CXX) $(CXX_FLAGS) -c $< -o $@
 
 $(OBJECTS)/store.o: $(SOURCES)/store.cpp build
 	$(CXX) $(CXX_FLAGS) -c $< -o $@
 
-link: $(OBJECTS)/main.o $(OBJECTS)/store.o
+$(OBJECTS)/text_handlers.o: $(SOURCES)/text_handlers.cpp build
+	$(CXX) $(CXX_FLAGS) -c $< -o $@
+
+link: $(OBJECTS)/main.o $(OBJECTS)/store.o $(OBJECTS)/text_handlers.o
 	clang++ $(LD_FLAGS) -o $(EXECUTABLE) $^
 
 debug: CXX_FLAGS += $(CXX_DEBUG_FLAGS)

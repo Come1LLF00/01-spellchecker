@@ -3,6 +3,7 @@
 /* USER CODE BEGIN Includes */
 #include "main.h"
 #include "store.h"
+#include "text_handlers.h"
 /* USER CODE END Includes */
 
 void test();
@@ -17,11 +18,41 @@ void print_store_state( Store & store ) {
 }
 
 void test() {
-  std::cout << "Hello, World!" << std::endl;
+  std::cout << "==== test store ====" << std::endl;
+
   Store st;
   print_store_state( st );
   st.set_limit_n( 20 );
   print_store_state( st );
   st.set_limit_out( 40 );
   print_store_state( st );
+
+  std::cout << "==== test text handlers ====" << std::endl;
+
+  std::string text;
+  std::getline( std::cin, text );
+
+  text = to_lower( text );
+
+  std::cout << "lowered: " << text << std::endl;
+
+  text = to_no_marks( text );
+
+  std::cout << "no marks: " << text << std::endl;
+
+  std::vector<std::string> words = to_words( text );
+
+  for ( auto & word : words ) {
+    std::cout << "just word: " << word;
+    word = to_dotted_word( word );
+    std::cout << "; dotted: " << word << std::endl;
+
+    std::vector<std::string> digrams = to_ngrams( word, 2 );
+    for ( auto digram : digrams )
+      std::cout << "+ " << digram << std::endl;
+    std::cout << "===" << std::endl;
+    std::vector<std::string> trigrams = to_ngrams( word, 3 );
+    for ( auto trigram : trigrams )
+      std::cout << "++ " << trigram << std::endl;
+  }
 }
